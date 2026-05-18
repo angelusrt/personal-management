@@ -1,0 +1,8 @@
+personal_management:
+  target: dev
+
+  outputs:
+    dev:
+      type: duckdb
+      path: ../warehouse/database.duckdb
+      threads: 4

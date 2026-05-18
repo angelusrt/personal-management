@@ -1,0 +1,12 @@
+prefect-version: 3.7.1
+name: personal_management
+
+deployments:
+  - name: ingest_notes_flow
+    entrypoint: flows/ingest_notes_flow.py:ingest_notes_flow
+    work_pool:
+      name: process_pool_0
+
+    schedule:
+      cron: "0 8 * * 0"
+      timezone: "America/Recife"

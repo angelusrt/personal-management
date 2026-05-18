@@ -1,0 +1,6 @@
+.gitkeep
+data/*
+warehouse/*
+logs/*
+dbt/logs/*
+*/__pycache__/*
