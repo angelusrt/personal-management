@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install apache-airflow ruff
+
+      - name: Lint DAGs
+        run: ruff check dags/
+
+      - name: Validate DAGs parse correctly
+        run: python -c "from airflow.models import DagBag; db = DagBag('dags/'); assert not db.import_errors, db.import_errors"
+
+      - name: Install dbt
+        run: pip install dbt-core dbt-duckdb
+
+      - name: dbt compile
+        working-directory: ./dbt
+        run: dbt compile --profiles-dir .
+
+      - name: Build Docker image
+        run: docker build -t airflow-personal .
