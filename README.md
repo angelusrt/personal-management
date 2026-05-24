@@ -5,10 +5,19 @@ para organizar meus dados pessoais e gerar insights sobre comportamentos e prát
 
 ## Build
 
-```bash
-prefect server start
+```{bash}
+docker compose up
+```
 
-prefect deploy
+## Syntax Highlight
 
-prefect worker start --pool "process_pool_0"
+
+```{bash}
+python3 -m venv .venv
+
+source .venv/bin/activate
+
+pip install apache-airflow
+
+pip install -r requirements.txt
 ```

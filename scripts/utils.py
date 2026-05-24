@@ -1,10 +1,9 @@
+from airflow.decorators import task
 import unicodedata
 import subprocess
-from prefect import task
-
 
 DB_PATH = "warehouse/database.duckdb"
-NOTES_PATH = "data/notes"
+NOTES_PATH = "data/notes/"
 
 
 def remove_accents(text: str) -> str:

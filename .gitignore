@@ -1,6 +1,7 @@
-.gitkeep
-data/*
-warehouse/*
-logs/*
-dbt/logs/*
-*/__pycache__/*
+.env
+data/
+warehouse/
+logs/
+dbt/logs/
+**/__pycache__/
+.airflow-home/
