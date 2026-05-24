@@ -19,6 +19,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Create required directories
+        run: mkdir -p warehouse logs data
+
       - name: Install dependencies
         run: pip install apache-airflow ruff && pip install -r requirements.txt
 
