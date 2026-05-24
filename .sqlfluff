@@ -1,0 +1,19 @@
+[sqlfluff]
+dialect = duckdb
+templater = dbt
+rules = capitalisation.keywords, capitalisation.identifiers, capitalisation.functions
+
+[sqlfluff:templater:dbt]
+profiles_dir = ./dbt
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.identifiers]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+capitalisation_policy = upper
+
+[sqlfluff:rules:convention.casting_style]
+preferred_type_casting_style = cast

@@ -91,7 +91,7 @@ def extract_notes():
                     data_extracao = NOW()
             """, [note_path.name, key, note.date, value])
 
-        for n, task in enumerate(note.tasks):
+        for n, job in enumerate(note.tasks):
             conn.execute("""
                 INSERT INTO raw.notas_tarefas (
                     nome_arquivo, ordem, data_referencia,
@@ -108,7 +108,7 @@ def extract_notes():
                     data_extracao = NOW()
             """, [
                 note_path.name, n, note.date,
-                task.is_done, task.category, task.description, task.effort
+                job.is_done, job.category, job.description, job.effort
             ])
 
         for n, nutri in enumerate(note.nutri):

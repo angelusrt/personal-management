@@ -4,3 +4,5 @@ dbt-duckdb
 markdown-it-py
 pandas
 pyyaml
+sqlfluff 
+sqlfluff-templater-dbt

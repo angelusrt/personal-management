@@ -37,3 +37,9 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t airflow-personal .
+
+      - name: Install SQLFluff
+        run: pip install sqlfluff sqlfluff-templater-dbt
+
+      - name: Lint SQL files
+        run: sqlfluff lint dbt/models/ --dialect duckdb
