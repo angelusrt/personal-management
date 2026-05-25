@@ -5,6 +5,7 @@ rules = capitalisation.keywords, capitalisation.identifiers, capitalisation.func
 
 [sqlfluff:templater:dbt]
 profiles_dir = ./dbt
+project_dir = ./dbt
 
 [sqlfluff:rules:capitalisation.keywords]
 capitalisation_policy = upper
