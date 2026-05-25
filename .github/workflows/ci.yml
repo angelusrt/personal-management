@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pip install apache-airflow ruff && pip install -r requirements.txt
 
+      - name: Initializing DB
+        run: python -c "import duckdb; con = duckdb.connect('warehouse/database.duckdb'); con.close()"
+
       - name: Lint DAGs
         run: ruff check dags/
 
@@ -34,7 +37,7 @@ jobs:
       - name: Install dbt
         run: pip install dbt-core dbt-duckdb
 
-      - name: dbt compile
+      - name: Dbt compile
         working-directory: ./dbt
         run: dbt compile --profiles-dir .
 
