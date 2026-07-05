@@ -1,6 +1,8 @@
-duckdb
 dbt-core
-dbt-duckdb
+
+apache-airflow-providers-google
+dbt-bigquery
+
 markdown-it-py
 pandas
 pyyaml
