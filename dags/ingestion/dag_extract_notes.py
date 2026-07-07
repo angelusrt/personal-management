@@ -1,21 +1,25 @@
 import sys
 sys.path.append("/opt/airflow")
 
+import os
 from pathlib import Path
 from datetime import datetime
 
 import pandas as pd
-from google.cloud import bigquery
+from google.cloud.bigquery import LoadJobConfig, WriteDisposition, CreateDisposition, SchemaField
+from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 from airflow.decorators import dag, task
 
 from scripts import utils, parser_notes
 
-PROJECT_ID = "airflow-bigquery-prod"
+
+PROJECT_ID = os.getenv("DBT_GCP_PROJECT_NAME")
 DATASET = "raw"
 
 @task
 def extract_notes():
-    client = bigquery.Client(project=PROJECT_ID)
+    hook = BigQueryHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
+    client = hook.get_client(project_id=PROJECT_ID)
 
     atributos = []
     tarefas = []
@@ -72,11 +76,18 @@ def extract_notes():
     }
 
     for table, df in tables.items():
+        if df.empty:
+            print(f"Skipping {table}: no rows parsed this run")
+            continue
+
         table_id = f"{PROJECT_ID}.{DATASET}.{table}"
 
-        client.query(f"TRUNCATE TABLE `{table_id}`").result()
+        job_config = LoadJobConfig(
+            write_disposition=WriteDisposition.WRITE_TRUNCATE,
+            create_disposition=CreateDisposition.CREATE_IF_NEEDED,
+        )
 
-        job = client.load_table_from_dataframe(df, table_id)
+        job = client.load_table_from_dataframe(df, table_id, job_config=job_config)
         job.result()
 
         print(f"Loaded {len(df)} rows into {table}")

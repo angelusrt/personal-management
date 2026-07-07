@@ -12,6 +12,8 @@ services:
     cpus: 1.0
     mem_limit: 2g
 
+    env_file: ".env"
+
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 120

@@ -7,7 +7,7 @@ personal_management:
       job_execution_timeout_seconds: 300
       job_retries: 1
       keyfile: "{{ env_var('DBT_BIGQUERY_KEYPATH') }}"
-      location: US
+      location: "{{ env_var('DBT_GCP_BIGQUERY_LOCATION') }}"
       method: service-account
       priority: interactive
       project: "{{ env_var('DBT_GCP_PROJECT_NAME') }}"
