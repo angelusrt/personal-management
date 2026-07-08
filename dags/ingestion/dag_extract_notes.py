@@ -14,7 +14,7 @@ from scripts import utils, parser_notes
 
 
 PROJECT_ID = os.getenv("DBT_GCP_PROJECT_NAME")
-DATASET = "raw"
+DATASET = "bronze"
 
 @task
 def extract_notes():
