@@ -29,5 +29,5 @@ services:
       - ./scripts:/opt/airflow/scripts
       - ./dbt:/opt/airflow/dbt
       - ${NOTES_FOLDER}:/opt/airflow/data/notes
-      - ${BQ_CREDENTIAL_FILE}:/opt/airflow/keys/airflow-sa-key.json:ro
+      - ${BQ_CREDENTIAL_FILE}:/opt/airflow/keys/airflow-key.json:ro
       - ./airflow-home:/root/airflow

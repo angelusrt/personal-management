@@ -16,9 +16,12 @@ clean-targets:
 
 models:
   personal_management:
-    staging:
+    bronze:
       +materialized: view
-    intermediate:
-      +materialized: view
-    marts:
+      +schema: bronze
+    silver:
       +materialized: table
+      +schema: silver
+    gold:
+      +materialized: table
+      +schema: gold

@@ -8,3 +8,4 @@ pandas
 pyyaml
 sqlfluff 
 sqlfluff-templater-dbt
+jupyter

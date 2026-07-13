@@ -2,25 +2,23 @@ import sys
 sys.path.append("/opt/airflow")
 
 import os
+import io
+import pendulum
 from pathlib import Path
 from datetime import datetime
 
 import pandas as pd
-from google.cloud.bigquery import LoadJobConfig, WriteDisposition, CreateDisposition, SchemaField
-from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+from airflow.providers.google.cloud.hooks.gcs import GCSHook
 from airflow.decorators import dag, task
 
 from scripts import utils, parser_notes
 
-
 PROJECT_ID = os.getenv("DBT_GCP_PROJECT_NAME")
+INGESTION_BUCKET = os.getenv("GCP_INGESTION_BUCKET")
 DATASET = "bronze"
 
 @task
 def extract_notes():
-    hook = BigQueryHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
-    client = hook.get_client(project_id=PROJECT_ID)
-
     atributos = []
     tarefas = []
     nutricao = []
@@ -75,33 +73,28 @@ def extract_notes():
         "notas_introspeccao": pd.DataFrame(introspeccao),
     }
 
+    hook = GCSHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
+    run_ts = pendulum.now("UTC").format("YYYYMMDDTHHmmss")
+
     for table, df in tables.items():
         if df.empty:
             print(f"Skipping {table}: no rows parsed this run")
             continue
 
-        table_id = f"{PROJECT_ID}.{DATASET}.{table}"
+        buffer = io.BytesIO()
+        df.to_parquet(buffer, engine="pyarrow", index=False)
+        buffer.seek(0)
 
-        job_config = LoadJobConfig(
-            write_disposition=WriteDisposition.WRITE_TRUNCATE,
-            create_disposition=CreateDisposition.CREATE_IF_NEEDED,
+        object_name = f"{table}/{run_ts}.parquet"
+
+        hook.upload(
+            bucket_name=INGESTION_BUCKET,
+            object_name=object_name,
+            data=buffer.getvalue(),
+            mime_type="application/octet-stream",
         )
 
-        job = client.load_table_from_dataframe(df, table_id, job_config=job_config)
-        job.result()
-
-        print(f"Loaded {len(df)} rows into {table}")
-
-
-@task
-def run_dbt():
-    import subprocess
-
-    subprocess.run(
-        ["dbt", "build", "--select", "stg_notas_tarefas notas_tarefas"],
-        check=True,
-        cwd="/opt/airflow/dbt"
-    )
+        print(f"Uploaded {len(df)} rows to gs://{INGESTION_BUCKET}/{object_name}")
 
 
 @dag(
@@ -112,9 +105,8 @@ def run_dbt():
 )
 def ingest_notes():
     extract_task = extract_notes()
-    dbt_task = run_dbt()
 
-    extract_task >> dbt_task
+    extract_task
 
 
 ingest_notes()

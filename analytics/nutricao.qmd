@@ -1,0 +1,25 @@
+---
+title: "Personal Management — Data Exploration"
+format:
+  html:
+    embed-resources: true
+jupyter: python3
+---
+
+```{python}
+from google.cloud import bigquery
+import pandas as pd
+
+client = bigquery.Client(project="atlas-computing-359718")
+
+query = """
+SELECT *
+FROM `atlas-computing-359718.bronze.raw_notas_nutricao`
+LIMIT 100
+"""
+
+df = client.query(query).to_dataframe()
+
+df = df[df["foi_feito"] == True][["data_referencia", "descricao"]]
+df.head()
+```

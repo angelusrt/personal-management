@@ -16,7 +16,7 @@ terraform {
 variable "project_id" { type = string }
 variable "location" { type = string }
 variable "zone_name" { type = string }
-variable "notification_email" { type = string }
+variable "my_email" { type = string }
 variable "admin_account_name" { type = string }
 variable "reader_account_name" { type = string }
 variable "gcs_bucket_name" { type = string }
@@ -42,6 +42,7 @@ module "gcs" {
   location = var.location
   gcs_bucket_name = var.gcs_bucket_name
 
+  my_email = var.my_email
   airflow_email = module.iam.airflow_email
   admin_email = module.iam.admin_email
   reader_email = module.iam.reader_email
@@ -52,9 +53,12 @@ module "bigquery" {
 
   project_id = var.project_id
   location = var.location
-  notification_email = var.notification_email
+  notification_email = var.my_email
 
   airflow_email = module.iam.airflow_email
   admin_email = module.iam.admin_email
   reader_email = module.iam.reader_email
+  gcs_bucket_name = var.gcs_bucket_name
+
+  depends_on = [module.gcs]
 }

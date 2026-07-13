@@ -1,6 +1,6 @@
 -- db: personal
 
-SELECT 
+SELECT
 	* 
 FROM raw.notas_tarefas 
 LIMIT 1000

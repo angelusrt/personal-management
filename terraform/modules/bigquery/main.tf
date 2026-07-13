@@ -6,6 +6,8 @@ variable "airflow_email" { type = string }
 variable "admin_email" { type = string }
 variable "reader_email" { type = string }
 
+variable "gcs_bucket_name" { type = string }
+
 ## Billing
 
 resource "google_project_service" "billing_budgets" {
@@ -55,6 +57,29 @@ resource "google_bigquery_dataset" "bronze_dataset" {
   depends_on = [
     google_project_service.bigquery
   ]
+}
+
+## External Tables with GCS
+
+variable "ingestion_sources" {
+  type    = set(string)
+  default = ["notas_nutricao", "notas_tarefas", "notas_introspeccao", "notas_atributos"]
+}
+
+resource "google_bigquery_table" "ingestion_external" {
+  for_each = var.ingestion_sources
+
+  dataset_id = google_bigquery_dataset.bronze_dataset.dataset_id
+  table_id = "raw_${each.value}"
+  project = var.project_id
+
+  external_data_configuration {
+    autodetect = true
+    source_format = "PARQUET"
+    source_uris = ["gs://${var.gcs_bucket_name}/${each.value}/*.parquet"]
+  }
+
+  deletion_protection = false
 }
 
 ## IAM

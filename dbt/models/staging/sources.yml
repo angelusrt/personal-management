@@ -1,8 +1,0 @@
-sources:
-  - name: raw
-    schema: raw  
-    tables:
-      - name: notas_atributos
-      - name: notas_tarefas
-      - name: notas_nutricao
-      - name: notas_introspeccao

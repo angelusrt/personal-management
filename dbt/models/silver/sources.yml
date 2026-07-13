@@ -1,0 +1,8 @@
+sources:
+  - name: bronze
+    schema: bronze  
+    tables:
+      - name: raw_notas_atributos
+      - name: raw_notas_tarefas
+      - name: raw_notas_nutricao
+      - name: raw_notas_introspeccao
