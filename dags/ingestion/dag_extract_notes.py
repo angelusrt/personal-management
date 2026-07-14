@@ -74,7 +74,7 @@ def extract_notes():
     }
 
     hook = GCSHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
-    run_ts = pendulum.now("UTC").format("YYYYMMDDTHHmmss")
+    #run_ts = pendulum.now("UTC").format("YYYYMMDDTHHmmss")
 
     for table, df in tables.items():
         if df.empty:
@@ -85,7 +85,7 @@ def extract_notes():
         df.to_parquet(buffer, engine="pyarrow", index=False)
         buffer.seek(0)
 
-        object_name = f"{table}/{run_ts}.parquet"
+        object_name = f"{table}/main.parquet"
 
         hook.upload(
             bucket_name=INGESTION_BUCKET,

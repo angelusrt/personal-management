@@ -1,16 +1,12 @@
----
-title: "Personal Management — Data Exploration"
-format:
-  html:
-    embed-resources: true
-execute:
-  cache: true
----
+# Esse arquivo é um auxiliar de nutricao.qmd, pois 
+# o meu LSP não estava funcionando em arquivos quarto.
 
-```{python}
+from typing import cast
+
 from google.cloud import bigquery
 import pandas as pd
 
+#---
 
 client = bigquery.Client(project="atlas-computing-359718")
 
@@ -20,16 +16,17 @@ FROM `atlas-computing-359718.bronze.raw_notas_nutricao`
 LIMIT 100
 """
 
-df = client.query(query).to_dataframe()
+df = cast(pd.DataFrame, client.query(query).to_dataframe())
 
 print(df.columns)
-```
 
-```{python}
 df = df[df["foi_feito"] == True][["data_referencia", "eh_meta", "descricao"]]
 
+#---
+
 # 0. Remove '[]'
-df["descricao"] = df["descricao"].str.replace(r"\[|\]", "", regex=True)
+
+df["descricao"] = df["descricao"].str.replace(r"[|]", "", regex=True)
 
 # 1. Split description by '+' to get each item
 
@@ -47,15 +44,15 @@ exploded.loc[mask, "itens"] = exploded.loc[mask, "itens"].str.split("com")
 exploded = exploded.explode("itens").reset_index(drop=True)
 exploded["itens"] = exploded["itens"].str.strip()
 
-# 3. Divide the text into quantity, unit and food
+exploded.head(50)
+
+#exploded.head()
 
 full = exploded["itens"].str.extract(
     r"(?P<quantidade>\d+(?:\.\d+)?)\s*"
-	r"(?P<unidade>h|g|ml|kg|l|xicara|xicaras|copos|copo|fatias|fatia|scoop)\s+(?:de\s+)?"
+	r"(?P<unidade>g|ml|kg|l|xicara|xicaras|copo|copos|fatia|fatias|scoop)\s+de\s+"
 	r"(?P<alimento>.+)"
 )
-
-# 3. Implement fallback for those which do not have an explicit unit
 
 missing = full["alimento"].isna()
 fallback = exploded.loc[missing, "itens"].str.extract(
@@ -68,22 +65,6 @@ full.loc[missing, ["quantidade", "unidade", "alimento"]] = fallback[
     ["quantidade", "unidade", "alimento"]
 ]
 
-# 3. Implement fallback for those which do not have an explicit unit and quantity
-
-missing2 = full["alimento"].isna()
-
-fallback2 = exploded.loc[missing2, "itens"].str.extract(
-    r"(?P<alimento>.+)"
-)
-fallback2["quantidade"] = "1"
-fallback2["unidade"] = "un"
-
-full.loc[missing2, ["quantidade", "unidade", "alimento"]] = fallback2[
-    ["quantidade", "unidade", "alimento"]
-]
-
-# 4. Fin
-
 result = pd.concat([exploded, full], axis=1)
+
 result.head(50)
-```

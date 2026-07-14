@@ -1,6 +1,7 @@
 .env
 .terraform*
 
+.jupyter_cache/
 .airflow-home/
 .terraform/
 **/__pycache__/

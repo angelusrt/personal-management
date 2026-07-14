@@ -5,7 +5,11 @@ apache-airflow-providers-google
 
 markdown-it-py
 pandas
+pandas-stubs
+polars
 pyyaml
 sqlfluff 
 sqlfluff-templater-dbt
+
 jupyter
+jupyter-cache

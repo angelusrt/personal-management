@@ -63,7 +63,7 @@ resource "google_bigquery_dataset" "bronze_dataset" {
 
 variable "ingestion_sources" {
   type    = set(string)
-  default = ["notas_nutricao", "notas_tarefas", "notas_introspeccao", "notas_atributos"]
+  default = ["notas_nutricao", "notas_nutricao_enriquecida", "notas_tarefas", "notas_introspeccao", "notas_atributos"]
 }
 
 resource "google_bigquery_table" "ingestion_external" {
