@@ -2240,90 +2240,155 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </header>
 
 
-<div id="8b0adba2" class="cell" data-execution_count="2">
+<div id="9aa8c34a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.cloud <span class="im">import</span> bigquery</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> bigquery.Client(project<span class="op">=</span><span class="st">&quot;atlas-computing-359718&quot;</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">FROM `atlas-computing-359718.bronze.raw_notas_nutricao`</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">LIMIT 100</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Index([&#39;nome_arquivo&#39;, &#39;ordem&#39;, &#39;data_referencia&#39;, &#39;foi_feito&#39;, &#39;eh_meta&#39;,
-       &#39;descricao&#39;],
-      dtype=&#39;str&#39;)</code></pre>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>project <span class="op">=</span> os.getenv(<span class="st">&quot;GCP_PROJECT_NAME&quot;</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> bigquery.Client(project<span class="op">=</span>project)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">&quot;display.max_rows&quot;</span>, <span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div id="ec09ae06" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="34763d8f" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&quot;foi_feito&quot;</span>] <span class="op">==</span> <span class="va">True</span>][[<span class="st">&quot;data_referencia&quot;</span>, <span class="st">&quot;eh_meta&quot;</span>, <span class="st">&quot;descricao&quot;</span>]]</span>
+<div id="fa864da4" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&quot;foi_feito&quot;</span>]][[<span class="st">&quot;data_referencia&quot;</span>, <span class="st">&quot;eh_meta&quot;</span>, <span class="st">&quot;descricao&quot;</span>]]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0. Remove &#39;[]&#39;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;descricao&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;descricao&quot;</span>].<span class="bu">str</span>.replace(<span class="vs">r&quot;</span><span class="ch">\[</span><span class="cf">|</span><span class="ch">\]</span><span class="vs">&quot;</span>, <span class="st">&quot;&quot;</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Split description by &#39;+&#39; to get each item</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;itens&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;descricao&quot;</span>].<span class="bu">str</span>.split(<span class="st">&quot;+&quot;</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>exploded <span class="op">=</span> df.explode(<span class="st">&quot;itens&quot;</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>exploded[<span class="st">&quot;itens&quot;</span>] <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.strip().fillna(<span class="st">&quot;&quot;</span>).astype(<span class="bu">object</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Split it further by &#39;com&#39; whenever it is followed by a number</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>exploded[<span class="st">&quot;tem_com_com_digito&quot;</span>] <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.contains(<span class="vs">r&quot;</span><span class="dv">\s</span><span class="op">+</span><span class="vs">com</span><span class="dv">\s</span><span class="op">+</span><span class="dv">\d</span><span class="op">+</span><span class="vs">&quot;</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> exploded[<span class="st">&quot;tem_com_com_digito&quot;</span>]</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>exploded.loc[mask, <span class="st">&quot;itens&quot;</span>] <span class="op">=</span> exploded.loc[mask, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.split(<span class="st">&quot;com&quot;</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>exploded <span class="op">=</span> exploded.explode(<span class="st">&quot;itens&quot;</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>exploded[<span class="st">&quot;itens&quot;</span>] <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.strip()</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Divide the text into quantity, unit and food</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>full <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;quantidade&gt;</span><span class="dv">\d</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="dv">\d</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">*</span><span class="vs">&quot;</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;unidade&gt;</span><span class="vs">h</span><span class="cf">|</span><span class="vs">g</span><span class="cf">|</span><span class="vs">ml</span><span class="cf">|</span><span class="vs">kg</span><span class="cf">|</span><span class="vs">l</span><span class="cf">|</span><span class="vs">xicara</span><span class="cf">|</span><span class="vs">xicaras</span><span class="cf">|</span><span class="vs">copos</span><span class="cf">|</span><span class="vs">copo</span><span class="cf">|</span><span class="vs">fatias</span><span class="cf">|</span><span class="vs">fatia</span><span class="cf">|</span><span class="vs">scoop</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span>(?:<span class="vs">de</span><span class="dv">\s</span><span class="op">+</span>)<span class="op">?</span><span class="vs">&quot;</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Implement fallback for those which do not have an explicit unit</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>missing <span class="op">=</span> full[<span class="st">&quot;alimento&quot;</span>].isna()</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>fallback <span class="op">=</span> exploded.loc[missing, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;quantidade&gt;</span><span class="dv">\d</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="dv">\d</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>fallback[<span class="st">&quot;unidade&quot;</span>] <span class="op">=</span> <span class="st">&quot;un&quot;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;descricao&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;descricao&quot;</span>].<span class="bu">str</span>.replace(<span class="vs">r&quot;</span><span class="ch">\[</span><span class="cf">|</span><span class="ch">\]</span><span class="vs">&quot;</span>, <span class="st">&quot;&quot;</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Convert plural to singular</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>repmap <span class="op">=</span> {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;aes$&quot;</span>: <span class="st">&quot;ao&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;oes$&quot;</span>: <span class="st">&quot;ao&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ens$&quot;</span>: <span class="st">&quot;em&quot;</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ies$&quot;</span>: <span class="st">&quot;ie&quot;</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;eis$&quot;</span>: <span class="st">&quot;el&quot;</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ps$&quot;</span>: <span class="st">&quot;p&quot;</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;as$&quot;</span>: <span class="st">&quot;a&quot;</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;os$&quot;</span>: <span class="st">&quot;o&quot;</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;es$&quot;</span>: <span class="st">&quot;e&quot;</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;aes &quot;</span>: <span class="st">&quot;ao &quot;</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;oes &quot;</span>: <span class="st">&quot;ao &quot;</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ens &quot;</span>: <span class="st">&quot;em &quot;</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ies &quot;</span>: <span class="st">&quot;ie &quot;</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;eis &quot;</span>: <span class="st">&quot;el &quot;</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ps &quot;</span>: <span class="st">&quot;p &quot;</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;as &quot;</span>: <span class="st">&quot;a &quot;</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;os &quot;</span>: <span class="st">&quot;o &quot;</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;es &quot;</span>: <span class="st">&quot;e &quot;</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;descricao&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;descricao&quot;</span>].<span class="bu">str</span>.replace(repmap, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Split description by &#39;+&#39; to get each item</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;itens&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;descricao&quot;</span>].<span class="bu">str</span>.split(<span class="st">&quot;+&quot;</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>exploded <span class="op">=</span> df.explode(<span class="st">&quot;itens&quot;</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>exploded[<span class="st">&quot;itens&quot;</span>] <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.strip().fillna(<span class="st">&quot;&quot;</span>).astype(<span class="bu">object</span>)</span>
 <span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>full.loc[missing, [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]] <span class="op">=</span> fallback[</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Split it further by &#39;com&#39; whenever it is followed by a number</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>exploded[<span class="st">&quot;tem_com_com_digito&quot;</span>] <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.contains(<span class="vs">r&quot;</span><span class="dv">\s</span><span class="op">+</span><span class="vs">com</span><span class="dv">\s</span><span class="op">+</span><span class="dv">\d</span><span class="op">+</span><span class="vs">&quot;</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Implement fallback for those which do not have an explicit unit and quantity</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>missing2 <span class="op">=</span> full[<span class="st">&quot;alimento&quot;</span>].isna()</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>fallback2 <span class="op">=</span> exploded.loc[missing2, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>fallback2[<span class="st">&quot;quantidade&quot;</span>] <span class="op">=</span> <span class="st">&quot;1&quot;</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>fallback2[<span class="st">&quot;unidade&quot;</span>] <span class="op">=</span> <span class="st">&quot;un&quot;</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>full.loc[missing2, [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]] <span class="op">=</span> fallback2[</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> exploded[<span class="st">&quot;tem_com_com_digito&quot;</span>]</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>exploded.loc[mask, <span class="st">&quot;itens&quot;</span>] <span class="op">=</span> exploded.loc[mask, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.split(<span class="st">&quot;com&quot;</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>exploded <span class="op">=</span> exploded.explode(<span class="st">&quot;itens&quot;</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>exploded[<span class="st">&quot;itens&quot;</span>] <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.strip()</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Divide the text into quantity, unit and food</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>full <span class="op">=</span> exploded[<span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;quantidade&gt;</span><span class="dv">\d</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="dv">\d</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">*</span><span class="vs">&quot;</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;unidade&gt;</span><span class="vs">h</span><span class="cf">|</span><span class="vs">min</span><span class="cf">|</span><span class="vs">g</span><span class="cf">|</span><span class="vs">ml</span><span class="cf">|</span><span class="vs">kg</span><span class="cf">|</span><span class="vs">l</span><span class="cf">|</span><span class="vs">xicara</span><span class="cf">|</span><span class="vs">copo</span><span class="cf">|</span><span class="vs">fatia</span><span class="cf">|</span><span class="vs">scoop</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span>(?:<span class="vs">de</span><span class="dv">\s</span><span class="op">+</span>)<span class="op">?</span><span class="vs">&quot;</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Fin</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Implement fallback for those which do not have an explicit unit</span></span>
 <span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pd.concat([exploded, full], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>result.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="60">
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>missing <span class="op">=</span> full[<span class="st">&quot;alimento&quot;</span>].isna()</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>fallback <span class="op">=</span> exploded.loc[missing, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;quantidade&gt;</span><span class="dv">\d</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="dv">\d</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">+</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>fallback[<span class="st">&quot;unidade&quot;</span>] <span class="op">=</span> <span class="st">&quot;un&quot;</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>full.loc[missing, [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]] <span class="op">=</span> fallback[</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Implement fallback for special ones with this format &#39;[food] - [quantity][unit]&#39;</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>missing2 <span class="op">=</span> full[<span class="st">&quot;alimento&quot;</span>].isna()</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>fallback2 <span class="op">=</span> exploded.loc[missing2, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="dv">\s</span><span class="op">*</span><span class="vs">-</span><span class="dv">\s</span><span class="op">*</span><span class="vs">&quot;</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;quantidade&gt;</span><span class="dv">\d</span><span class="op">+</span>(?:<span class="ch">\.</span><span class="dv">\d</span><span class="op">+</span>)<span class="op">?</span><span class="kw">)</span><span class="dv">\s</span><span class="op">*</span><span class="vs">&quot;</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;unidade&gt;</span><span class="vs">h</span><span class="cf">|</span><span class="vs">min</span><span class="cf">|</span><span class="vs">g</span><span class="cf">|</span><span class="vs">ml</span><span class="cf">|</span><span class="vs">kg</span><span class="cf">|</span><span class="vs">l</span><span class="cf">|</span><span class="vs">xicara</span><span class="cf">|</span><span class="vs">copo</span><span class="cf">|</span><span class="vs">fatia</span><span class="cf">|</span><span class="vs">scoop</span><span class="kw">)</span><span class="op">?</span><span class="vs">&quot;</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>full.loc[missing2, [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]] <span class="op">=</span> fallback2[</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Implement fallback for those which do not have an explicit unit and quantity</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>missing3 <span class="op">=</span> full[<span class="st">&quot;alimento&quot;</span>].isna()</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>fallback3 <span class="op">=</span> exploded.loc[missing3, <span class="st">&quot;itens&quot;</span>].<span class="bu">str</span>.extract(</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r&quot;</span><span class="kw">(</span><span class="fu">?P&lt;alimento&gt;</span><span class="dv">.</span><span class="op">+</span><span class="kw">)</span><span class="vs">&quot;</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>fallback3[<span class="st">&quot;quantidade&quot;</span>] <span class="op">=</span> <span class="st">&quot;1&quot;</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>fallback3[<span class="st">&quot;unidade&quot;</span>] <span class="op">=</span> <span class="st">&quot;un&quot;</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>full.loc[missing3, [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]] <span class="op">=</span> fallback3[</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;quantidade&quot;</span>, <span class="st">&quot;unidade&quot;</span>, <span class="st">&quot;alimento&quot;</span>]</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>full[<span class="st">&quot;alimento&quot;</span>] <span class="op">=</span> full[<span class="st">&quot;alimento&quot;</span>].<span class="bu">str</span>.strip()</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co"># 8. Fin</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="co">#result = pd.concat([exploded, full], axis=1)</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="co">#pd.set_option(&quot;display.max_rows&quot;, None)</span></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="co">#result.head(100)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+<div id="450a964d" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao_enriquecida</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">LIMIT 100</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="06ec0ebf" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># copo, xicara -&gt; ml + pratinho -&gt; g + prato -&gt; g + scoop -&gt; g + min -&gt; h</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sobra fatia, outra unidade inconvencional</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">    unidade</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao_enriquecida</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY 1</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>units.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -2331,572 +2396,95 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">data_referencia</th>
-<th data-quarto-table-cell-role="th">eh_meta</th>
-<th data-quarto-table-cell-role="th">descricao</th>
-<th data-quarto-table-cell-role="th">itens</th>
-<th data-quarto-table-cell-role="th">tem_com_com_digito</th>
-<th data-quarto-table-cell-role="th">quantidade</th>
 <th data-quarto-table-cell-role="th">unidade</th>
-<th data-quarto-table-cell-role="th">alimento</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>50g de sanduiche de frango + 200ml de leite de...</td>
-<td>50g de sanduiche de frango</td>
-<td>False</td>
-<td>50</td>
-<td>g</td>
-<td>sanduiche de frango</td>
+<td>grama</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>50g de sanduiche de frango + 200ml de leite de...</td>
-<td>200ml de leite desnatado</td>
-<td>False</td>
-<td>200</td>
-<td>ml</td>
-<td>leite desnatado</td>
+<td>mililitro</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>2 vigor grego light</td>
-<td>2 vigor grego light</td>
-<td>False</td>
-<td>2</td>
-<td>un</td>
-<td>vigor grego light</td>
+<td>unidade</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>2 scoop de proteina</td>
-<td>2 scoop de proteina</td>
-<td>False</td>
-<td>2</td>
 <td>scoop</td>
-<td>proteina</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 90g de feijao...</td>
-<td>100g de arroz</td>
-<td>False</td>
-<td>100</td>
-<td>g</td>
-<td>arroz</td>
+<td>hora</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">5</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 90g de feijao...</td>
-<td>40g de legumes</td>
-<td>False</td>
-<td>40</td>
-<td>g</td>
-<td>legumes</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">6</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 90g de feijao...</td>
-<td>90g de feijao</td>
-<td>False</td>
-<td>90</td>
-<td>g</td>
-<td>feijao</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">7</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 90g de feijao...</td>
-<td>120g de frango</td>
-<td>False</td>
-<td>120</td>
-<td>g</td>
-<td>frango</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">8</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 90g de feijao...</td>
-<td>50g de salada</td>
-<td>False</td>
-<td>50</td>
-<td>g</td>
-<td>salada</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">9</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>50g de sanduiche de frango</td>
-<td>50g de sanduiche de frango</td>
-<td>False</td>
-<td>50</td>
-<td>g</td>
-<td>sanduiche de frango</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">10</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>1 brigadeiro</td>
-<td>1 brigadeiro</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>brigadeiro</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">11</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>pao com 2 ovos</td>
-<td>pao</td>
-<td>True</td>
-<td>1</td>
-<td>un</td>
-<td>pao</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">12</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>pao com 2 ovos</td>
-<td>2 ovos</td>
-<td>True</td>
-<td>2</td>
-<td>un</td>
-<td>ovos</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">13</th>
-<td>2026-07-09</td>
-<td>False</td>
-<td>400ml de leite desnatado</td>
-<td>400ml de leite desnatado</td>
-<td>False</td>
-<td>400</td>
-<td>ml</td>
-<td>leite desnatado</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">14</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>150g de sanduiche de frango, ovo e requeijao +...</td>
-<td>150g de sanduiche de frango, ovo e requeijao</td>
-<td>False</td>
-<td>150</td>
-<td>g</td>
-<td>sanduiche de frango, ovo e requeijao</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">15</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>150g de sanduiche de frango, ovo e requeijao +...</td>
-<td>1 xicara de cafe com leite</td>
-<td>False</td>
-<td>1</td>
-<td>xicara</td>
-<td>cafe com leite</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">16</th>
-<td>2026-06-13</td>
-<td>True</td>
-<td>1h academia</td>
-<td>1h academia</td>
-<td>False</td>
-<td>1</td>
-<td>h</td>
-<td>academia</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">17</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>272g de arroz + 200g de empanado de frango</td>
-<td>272g de arroz</td>
-<td>False</td>
-<td>272</td>
-<td>g</td>
-<td>arroz</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">18</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>272g de arroz + 200g de empanado de frango</td>
-<td>200g de empanado de frango</td>
-<td>False</td>
-<td>200</td>
-<td>g</td>
-<td>empanado de frango</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">19</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>1 scoop de proteina</td>
-<td>1 scoop de proteina</td>
-<td>False</td>
-<td>1</td>
-<td>scoop</td>
-<td>proteina</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">20</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>500ml de vitamina de acai+ 1 cachorro quente</td>
-<td>500ml de vitamina de acai</td>
-<td>False</td>
-<td>500</td>
-<td>ml</td>
-<td>vitamina de acai</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">21</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>500ml de vitamina de acai+ 1 cachorro quente</td>
-<td>1 cachorro quente</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>cachorro quente</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">22</th>
-<td>2026-06-13</td>
-<td>False</td>
-<td>1 scoop de proteina</td>
-<td>1 scoop de proteina</td>
-<td>False</td>
-<td>1</td>
-<td>scoop</td>
-<td>proteina</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">23</th>
-<td>2026-05-30</td>
-<td>True</td>
-<td>cafe da manha normal</td>
-<td>cafe da manha normal</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>cafe da manha normal</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">24</th>
-<td>2026-05-30</td>
-<td>True</td>
-<td>almoco normal - 500g</td>
-<td>almoco normal - 500g</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>almoco normal - 500g</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">25</th>
-<td>2026-05-30</td>
-<td>False</td>
-<td>2 vigor grego</td>
-<td>2 vigor grego</td>
-<td>False</td>
-<td>2</td>
-<td>un</td>
-<td>vigor grego</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">26</th>
-<td>2026-05-30</td>
-<td>False</td>
-<td>500ml de vitamina de acai</td>
-<td>500ml de vitamina de acai</td>
-<td>False</td>
-<td>500</td>
-<td>ml</td>
-<td>vitamina de acai</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">27</th>
-<td>2026-05-30</td>
-<td>False</td>
-<td>cachorro quente</td>
-<td>cachorro quente</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>cachorro quente</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">28</th>
-<td>2026-05-30</td>
-<td>False</td>
-<td>pastel de carne</td>
-<td>pastel de carne</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>pastel de carne</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">29</th>
-<td>2026-05-30</td>
-<td>True</td>
-<td>1h academia</td>
-<td>1h academia</td>
-<td>False</td>
-<td>1</td>
-<td>h</td>
-<td>academia</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">30</th>
-<td>2026-05-19</td>
-<td>True</td>
-<td>cafe da manha normal</td>
-<td>cafe da manha normal</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>cafe da manha normal</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">31</th>
-<td>2026-05-19</td>
-<td>True</td>
-<td>almoco normal - 500g</td>
-<td>almoco normal - 500g</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>almoco normal - 500g</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">32</th>
-<td>2026-05-19</td>
-<td>False</td>
-<td>2 vigor grego light</td>
-<td>2 vigor grego light</td>
-<td>False</td>
-<td>2</td>
-<td>un</td>
-<td>vigor grego light</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">33</th>
-<td>2026-05-19</td>
-<td>True</td>
-<td>jantar normal - 500g</td>
-<td>jantar normal - 500g</td>
-<td>False</td>
-<td>1</td>
-<td>un</td>
-<td>jantar normal - 500g</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">34</th>
-<td>2026-05-19</td>
-<td>False</td>
-<td>500ml vitamina de banana</td>
-<td>500ml vitamina de banana</td>
-<td>False</td>
-<td>500</td>
-<td>ml</td>
-<td>vitamina de banana</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">35</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>50g de sanduiche de frango + 1 xicara de cafe ...</td>
-<td>50g de sanduiche de frango</td>
-<td>False</td>
-<td>50</td>
-<td>g</td>
-<td>sanduiche de frango</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">36</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>50g de sanduiche de frango + 1 xicara de cafe ...</td>
-<td>1 xicara de cafe com leite</td>
-<td>False</td>
-<td>1</td>
-<td>xicara</td>
-<td>cafe com leite</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">37</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>2 vigor grego light</td>
-<td>2 vigor grego light</td>
-<td>False</td>
-<td>2</td>
-<td>un</td>
-<td>vigor grego light</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">38</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 80g de feijao...</td>
-<td>100g de arroz</td>
-<td>False</td>
-<td>100</td>
-<td>g</td>
-<td>arroz</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">39</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 80g de feijao...</td>
-<td>40g de legumes</td>
-<td>False</td>
-<td>40</td>
-<td>g</td>
-<td>legumes</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">40</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 80g de feijao...</td>
-<td>80g de feijao</td>
-<td>False</td>
-<td>80</td>
-<td>g</td>
-<td>feijao</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">41</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 80g de feijao...</td>
-<td>100g de carne</td>
-<td>False</td>
-<td>100</td>
-<td>g</td>
-<td>carne</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">42</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de arroz + 40g de legumes + 80g de feijao...</td>
-<td>50g de salada</td>
-<td>False</td>
-<td>50</td>
-<td>g</td>
-<td>salada</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">43</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>50g de sanduiche de frango</td>
-<td>50g de sanduiche de frango</td>
-<td>False</td>
-<td>50</td>
-<td>g</td>
-<td>sanduiche de frango</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">44</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de macaxeira+ 100g de frango</td>
-<td>100g de macaxeira</td>
-<td>False</td>
-<td>100</td>
-<td>g</td>
-<td>macaxeira</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">45</th>
-<td>2026-07-02</td>
-<td>False</td>
-<td>100g de macaxeira+ 100g de frango</td>
-<td>100g de frango</td>
-<td>False</td>
-<td>100</td>
-<td>g</td>
-<td>frango</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">46</th>
-<td>2026-06-15</td>
-<td>False</td>
-<td>2 ovos + 2 fatias de pao integral + 1 xicara d...</td>
-<td>2 ovos</td>
-<td>False</td>
-<td>2</td>
-<td>un</td>
-<td>ovos</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">47</th>
-<td>2026-06-15</td>
-<td>False</td>
-<td>2 ovos + 2 fatias de pao integral + 1 xicara d...</td>
-<td>2 fatias de pao integral</td>
-<td>False</td>
-<td>2</td>
-<td>fatias</td>
-<td>pao integral</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">48</th>
-<td>2026-06-15</td>
-<td>False</td>
-<td>2 ovos + 2 fatias de pao integral + 1 xicara d...</td>
-<td>1 xicara de cafe com leite</td>
-<td>False</td>
-<td>1</td>
-<td>xicara</td>
-<td>cafe com leite</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">49</th>
-<td>2026-06-15</td>
-<td>False</td>
-<td>2 vigor grego light + 1 scoop de proteina</td>
-<td>2 vigor grego light</td>
-<td>False</td>
-<td>2</td>
-<td>un</td>
-<td>vigor grego light</td>
+<td>fatia</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 </div>
+</div>
+<div id="e4a6107d" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao_enriquecida</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>units.head(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cbf79295" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ss">WITH base AS (</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ss">        alimento,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ss">        unidade,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ss">        COUNT(*) AS quantidade</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    FROM bronze.raw_notas_nutricao_enriquecida</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">    GROUP BY alimento, unidade</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">), canonical_form AS (</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ss">        alimento,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">        unidade</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ss">    FROM (</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ss">        SELECT</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="ss">            b.*,</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ss">            ROW_NUMBER() OVER (</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ss">                PARTITION BY b.alimento</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">                ORDER BY b.quantidade DESC</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="ss">            ) AS rn</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="ss">        FROM base b</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="ss">    )</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="ss">    WHERE rn = 1</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="ss">)</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    FARM_FINGERPRINT(alimento) AS id_alimento,</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    alimento AS nome_alimento,</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="ss">    unidade AS unidade_de_medida,</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="ss">    CASE</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="ss">        WHEN unidade IN (&#39;unidade&#39;, &#39;hora&#39;, &#39;fatia&#39;) THEN 1</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="ss">        WHEN unidade IN (&#39;grama&#39;, &#39;mililitro&#39;) THEN 100</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="ss">        ELSE NULL</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    END AS quantidade_referencia,</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="ss">    &#39;PENDENTE&#39; AS status,</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="ss">    NULL AS categoria_alimento,</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="ss">    NULL AS fonte,</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="ss">    NULL AS imprecisao,</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    CAST(NULL AS INT64) AS proteina,</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="ss">    CAST(NULL AS INT64) AS gordura,</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="ss">    CAST(NULL AS INT64) AS carboidrato,</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="ss">    CAST(NULL AS INT64) AS caloria</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="ss">FROM canonical_form</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 </main>

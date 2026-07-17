@@ -1,9 +1,7 @@
 import sys
 sys.path.append("/opt/airflow")
 
-import os
 import io
-import pendulum
 from pathlib import Path
 from datetime import datetime
 
@@ -13,12 +11,10 @@ from airflow.decorators import dag, task
 
 from scripts import utils, parser_notes
 
-PROJECT_ID = os.getenv("DBT_GCP_PROJECT_NAME")
-INGESTION_BUCKET = os.getenv("GCP_INGESTION_BUCKET")
-DATASET = "bronze"
-
 @task
 def extract_notes():
+    assert type(utils.INGESTION_BUCKET) is str
+
     atributos = []
     tarefas = []
     nutricao = []
@@ -74,7 +70,6 @@ def extract_notes():
     }
 
     hook = GCSHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
-    #run_ts = pendulum.now("UTC").format("YYYYMMDDTHHmmss")
 
     for table, df in tables.items():
         if df.empty:
@@ -88,13 +83,13 @@ def extract_notes():
         object_name = f"{table}/main.parquet"
 
         hook.upload(
-            bucket_name=INGESTION_BUCKET,
+            bucket_name=utils.INGESTION_BUCKET,
             object_name=object_name,
             data=buffer.getvalue(),
             mime_type="application/octet-stream",
         )
 
-        print(f"Uploaded {len(df)} rows to gs://{INGESTION_BUCKET}/{object_name}")
+        print(f"Uploaded {len(df)} rows to gs://{utils.INGESTION_BUCKET}/{object_name}")
 
 
 @dag(

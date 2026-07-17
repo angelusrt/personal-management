@@ -22,8 +22,10 @@ E, então, criar um arquivo '.env' com as seguintes variáveis:
 - NOTES_FOLDER
 - DBT_BIGQUERY_DATASET_NAME
 - DBT_BIGQUERY_KEYPATH
-- DBT_GCP_PROJECT_NAM
+- DBT_GCP_PROJECT_NAME
 - DBT_GCP_BIGQUERY_LOCATION
+- GCP_PROJECT_NAME
+- GOOGLE_API_KEY
 
 Finalmente, rodar o container:
 

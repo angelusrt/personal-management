@@ -16,3 +16,5 @@ dbt/logs/
 *.tfvars
 *.tfstate
 *.backup
+
+nutricao-aux.py

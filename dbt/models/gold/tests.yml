@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: d_alimento
+    description: "Dimensão de alimentos enriquecida com informações nutricionais."
+
+    columns:
+      - name: id_alimento
+        description: "Chave substituta do alimento."
+        tests:
+          - unique
+          - not_null
+
+      - name: nome_alimento
+        description: "Nome do alimento."
+        tests:
+          - unique
+          - not_null
+
+      - name: unidade_de_medida
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - grama
+                - mililitro
+                - unidade
+                - hora
+                - fatia
+
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - PENDENTE
+                - ENRIQUECIDO
+                - REVISADO
+
+      - name: quantidade_referencia
+        tests:
+          - not_null

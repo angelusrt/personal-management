@@ -62,8 +62,14 @@ resource "google_bigquery_dataset" "bronze_dataset" {
 ## External Tables with GCS
 
 variable "ingestion_sources" {
-  type    = set(string)
-  default = ["notas_nutricao", "notas_nutricao_enriquecida", "notas_tarefas", "notas_introspeccao", "notas_atributos"]
+  type = set(string)
+  default = [
+    "notas_nutricao", 
+    "notas_nutricao_enriquecida", 
+    "notas_tarefas", 
+    "notas_introspeccao", 
+    "notas_atributos"
+  ]
 }
 
 resource "google_bigquery_table" "ingestion_external" {
@@ -82,6 +88,22 @@ resource "google_bigquery_table" "ingestion_external" {
   deletion_protection = false
 }
 
+## Dataplex
+
+resource "google_project_service" "dataplex" {
+  project = var.project_id
+  service = "dataplex.googleapis.com"
+
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "lineage" {
+  project = var.project_id
+  service = "datalineage.googleapis.com"
+
+  disable_on_destroy = false
+}
+
 ## IAM
 
 ### Airflow User
@@ -98,6 +120,12 @@ resource "google_project_iam_member" "bigquery_airflow_editor" {
   member = "serviceAccount:${var.airflow_email}"
 }
 
+resource "google_project_iam_member" "lineage_airflow_viewer" {
+  project = var.project_id
+  role = "roles/datalineage.viewer"
+  member  = "serviceAccount:${var.airflow_email}"
+}
+
 ### Admin Account
 
 resource "google_project_iam_member" "bigquery_admin_user" {
@@ -106,10 +134,22 @@ resource "google_project_iam_member" "bigquery_admin_user" {
   member = "serviceAccount:${var.admin_email}"
 }
 
+resource "google_project_iam_member" "lineage_admin_viewer" {
+  project = var.project_id
+  role = "roles/datalineage.viewer"
+  member  = "serviceAccount:${var.admin_email}"
+}
+
 ### Normal User
 
 resource "google_project_iam_member" "bigquery_reader_user" {
   project = var.project_id
   role = "roles/bigquery.dataViewer"
   member = "serviceAccount:${var.reader_email}"
+}
+
+resource "google_project_iam_member" "lineage_reader_viewer" {
+  project = var.project_id
+  role = "roles/datalineage.viewer"
+  member  = "serviceAccount:${var.reader_email}"
 }

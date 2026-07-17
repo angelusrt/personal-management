@@ -13,3 +13,5 @@ sqlfluff-templater-dbt
 
 jupyter
 jupyter-cache
+
+google-genai

@@ -20,13 +20,39 @@ df = cast(pd.DataFrame, client.query(query).to_dataframe())
 
 print(df.columns)
 
-df = df[df["foi_feito"] == True][["data_referencia", "eh_meta", "descricao"]]
+df = df[df["foi_feito"]][["data_referencia", "eh_meta", "descricao"]]
 
 #---
 
 # 0. Remove '[]'
 
 df["descricao"] = df["descricao"].str.replace(r"[|]", "", regex=True)
+
+# 1. Convert plural to singular
+
+repmap = {
+	"aes$": "ao",
+	"oes$": "ao",
+	"ens$": "em",
+	"ies$": "ie",
+	"eis$": "el",
+	"ps$": "p",
+	"as$": "a",
+	"os$": "o",
+	"es$": "e",
+
+    "aes ": "ao ",
+    "oes ": "ao ",
+    "ens ": "em ",
+    "ies ": "ie ",
+    "eis ": "el ",
+    "ps ": "p ",
+    "as ": "a ",
+    "os ": "o ",
+    "es ": "e ",
+}
+
+df["descricao"] = df["descricao"].str.replace(repmap)
 
 # 1. Split description by '+' to get each item
 
@@ -43,10 +69,6 @@ exploded.loc[mask, "itens"] = exploded.loc[mask, "itens"].str.split("com")
 
 exploded = exploded.explode("itens").reset_index(drop=True)
 exploded["itens"] = exploded["itens"].str.strip()
-
-exploded.head(50)
-
-#exploded.head()
 
 full = exploded["itens"].str.extract(
     r"(?P<quantidade>\d+(?:\.\d+)?)\s*"
@@ -67,4 +89,7 @@ full.loc[missing, ["quantidade", "unidade", "alimento"]] = fallback[
 
 result = pd.concat([exploded, full], axis=1)
 
+result.head(50)
+
+pd.set_option("display.max_colwidth", None)
 result.head(50)

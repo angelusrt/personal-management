@@ -9,35 +9,66 @@ execute:
 
 ```{python}
 from google.cloud import bigquery
+import os
 import pandas as pd
 
-
-client = bigquery.Client(project="atlas-computing-359718")
-
-query = """
-SELECT *
-FROM `atlas-computing-359718.bronze.raw_notas_nutricao`
-LIMIT 100
-"""
-
-df = client.query(query).to_dataframe()
-
-print(df.columns)
+project = os.getenv("GCP_PROJECT_NAME")
+client = bigquery.Client(project=project)
+pd.set_option("display.max_rows", None)
 ```
 
 ```{python}
-df = df[df["foi_feito"] == True][["data_referencia", "eh_meta", "descricao"]]
+#| eval: false
+query = """
+SELECT *
+FROM bronze.raw_notas_nutricao
+"""
+
+df = client.query(query).to_dataframe()
+```
+
+```{python}
+#| eval: false
+
+df = df[df["foi_feito"]][["data_referencia", "eh_meta", "descricao"]]
 
 # 0. Remove '[]'
+
 df["descricao"] = df["descricao"].str.replace(r"\[|\]", "", regex=True)
 
-# 1. Split description by '+' to get each item
+# 1. Convert plural to singular
+
+repmap = {
+	"aes$": "ao",
+	"oes$": "ao",
+	"ens$": "em",
+	"ies$": "ie",
+	"eis$": "el",
+	"ps$": "p",
+	"as$": "a",
+	"os$": "o",
+	"es$": "e",
+
+    "aes ": "ao ",
+    "oes ": "ao ",
+    "ens ": "em ",
+    "ies ": "ie ",
+    "eis ": "el ",
+    "ps ": "p ",
+    "as ": "a ",
+    "os ": "o ",
+    "es ": "e ",
+}
+
+df["descricao"] = df["descricao"].str.replace(repmap, regex=True)
+
+# 2. Split description by '+' to get each item
 
 df["itens"] = df["descricao"].str.split("+")
 exploded = df.explode("itens").reset_index(drop=True)
 exploded["itens"] = exploded["itens"].str.strip().fillna("").astype(object)
 
-# 2. Split it further by 'com' whenever it is followed by a number
+# 3. Split it further by 'com' whenever it is followed by a number
 
 exploded["tem_com_com_digito"] = exploded["itens"].str.contains(r"\s+com\s+\d+", regex=True)
 
@@ -47,15 +78,15 @@ exploded.loc[mask, "itens"] = exploded.loc[mask, "itens"].str.split("com")
 exploded = exploded.explode("itens").reset_index(drop=True)
 exploded["itens"] = exploded["itens"].str.strip()
 
-# 3. Divide the text into quantity, unit and food
+# 4. Divide the text into quantity, unit and food
 
 full = exploded["itens"].str.extract(
     r"(?P<quantidade>\d+(?:\.\d+)?)\s*"
-	r"(?P<unidade>h|g|ml|kg|l|xicara|xicaras|copos|copo|fatias|fatia|scoop)\s+(?:de\s+)?"
+	r"(?P<unidade>h|min|g|ml|kg|l|xicara|copo|fatia|scoop)\s+(?:de\s+)?"
 	r"(?P<alimento>.+)"
 )
 
-# 3. Implement fallback for those which do not have an explicit unit
+# 5. Implement fallback for those which do not have an explicit unit
 
 missing = full["alimento"].isna()
 fallback = exploded.loc[missing, "itens"].str.extract(
@@ -68,22 +99,134 @@ full.loc[missing, ["quantidade", "unidade", "alimento"]] = fallback[
     ["quantidade", "unidade", "alimento"]
 ]
 
-# 3. Implement fallback for those which do not have an explicit unit and quantity
+# 6. Implement fallback for special ones with this format '[food] - [quantity][unit]'
 
 missing2 = full["alimento"].isna()
-
 fallback2 = exploded.loc[missing2, "itens"].str.extract(
-    r"(?P<alimento>.+)"
+	r"(?P<alimento>.+)\s*-\s*"
+    r"(?P<quantidade>\d+(?:\.\d+)?)\s*"
+	r"(?P<unidade>h|min|g|ml|kg|l|xicara|copo|fatia|scoop)?"
 )
-fallback2["quantidade"] = "1"
-fallback2["unidade"] = "un"
 
 full.loc[missing2, ["quantidade", "unidade", "alimento"]] = fallback2[
     ["quantidade", "unidade", "alimento"]
 ]
 
-# 4. Fin
+# 7. Implement fallback for those which do not have an explicit unit and quantity
 
-result = pd.concat([exploded, full], axis=1)
-result.head(50)
+missing3 = full["alimento"].isna()
+
+fallback3 = exploded.loc[missing3, "itens"].str.extract(
+    r"(?P<alimento>.+)"
+)
+fallback3["quantidade"] = "1"
+fallback3["unidade"] = "un"
+
+full.loc[missing3, ["quantidade", "unidade", "alimento"]] = fallback3[
+    ["quantidade", "unidade", "alimento"]
+]
+
+full["alimento"] = full["alimento"].str.strip()
+
+# 8. Fin
+
+#result = pd.concat([exploded, full], axis=1)
+#
+#pd.set_option("display.max_rows", None)
+#result.head(100)
+```
+
+--- 
+
+```{python}
+#| eval: false
+
+query = """
+SELECT *
+FROM bronze.raw_notas_nutricao_enriquecida
+LIMIT 100
+"""
+
+df = client.query(query).to_dataframe()
+
+df.head(50)
+
+```
+
+```{python}
+# copo, xicara -> ml + pratinho -> g + prato -> g + scoop -> g + min -> h
+# sobra fatia, outra unidade inconvencional
+
+query = """
+SELECT 
+	unidade
+FROM bronze.raw_notas_nutricao_enriquecida
+GROUP BY 1
+"""
+
+units = client.query(query).to_dataframe()
+units.head(50)
+
+```
+
+```{python}
+#| eval: false
+
+query = """
+SELECT *
+FROM bronze.raw_notas_nutricao_enriquecida
+"""
+
+units = client.query(query).to_dataframe()
+units.head(100)
+```
+
+```{python}
+#| eval: false
+
+query = f"""
+WITH base AS (
+	SELECT
+		alimento,
+		unidade,
+		COUNT(*) AS quantidade
+	FROM bronze.raw_notas_nutricao_enriquecida
+	GROUP BY alimento, unidade
+), canonical_form AS (
+	SELECT
+		alimento,
+		unidade
+	FROM (
+		SELECT
+			b.*,
+			ROW_NUMBER() OVER (
+				PARTITION BY b.alimento
+				ORDER BY b.quantidade DESC
+			) AS rn
+		FROM base b
+	)
+	WHERE rn = 1
+)
+SELECT
+ 	FARM_FINGERPRINT(alimento) AS id_alimento,
+ 	alimento AS nome_alimento,
+ 	unidade AS unidade_de_medida,
+ 	CASE
+ 		WHEN unidade IN ('unidade', 'hora', 'fatia') THEN 1
+ 		WHEN unidade IN ('grama', 'mililitro') THEN 100
+ 		ELSE NULL
+ 	END AS quantidade_referencia,
+ 	'PENDENTE' AS status,
+ 	NULL AS categoria_alimento,
+ 	NULL AS fonte,
+ 	NULL AS imprecisao,
+ 	CAST(NULL AS INT64) AS proteina,
+ 	CAST(NULL AS INT64) AS gordura,
+ 	CAST(NULL AS INT64) AS carboidrato,
+ 	CAST(NULL AS INT64) AS caloria
+FROM canonical_form
+"""
+
+df = client.query(query).to_dataframe()
+df.head(50)
 ```
