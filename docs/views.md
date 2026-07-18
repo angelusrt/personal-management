@@ -22,28 +22,9 @@ série histórica.
 
 ### Modelagem
 
-alimentacao.f_dieta_diaria:
-- data_referencia (d_calendario sk)
-- id_alimento (d_alimento sk)
-- quantidade 
-- proteina
-- gordura
-- carboidrato
-- caloria
+#### Base
 
-alimentacao.d_alimento:
-- id_alimento (sk)
-- nome_alimento 
-- categoria_alimento
-- unidade_de_medida (grama|hora|unidade|etc...)
-- quantidade_referencia (50|100|etc...)
-- imprecisão ("Baixo", "Médio", "Alto")
-- proteina
-- gordura
-- carboidrato
-- caloria
-
-base.d_calendario:
+gold.d_calendario:
 - id_calendario (sk YYYYMMDD)
 - data
 - dia
@@ -54,24 +35,55 @@ base.d_calendario:
 - trimestre
 - eh_semana_util
 
+#### Alimentação
+
+silver.dlq_alimento:
+- id_alimento (sk)
+- nome_alimento 
+- unidade_observada
+- motivo
+- data_criacao
+
+gold.d_alimento:
+- id_alimento (sk)
+- nome_alimento 
+- categoria_alimento [LAD]
+- unidade_de_medida (grama|hora|unidade|etc...)
+- quantidade_referencia (50|100|etc...)
+- imprecisão ("Baixo", "Médio", "Alto") [LAD]
+- proteina [LAD]
+- gordura [LAD]
+- carboidrato [LAD]
+- caloria [LAD]
+
+gold.f_dieta_diaria:
+- data_referencia (d_calendario sk)
+- id_alimento (d_alimento sk)
+- quantidade 
+- proteina
+- gordura
+- carboidrato
+- caloria
+
+#### Saúde
+
+gold.f_saude:
+- data_referencia (d_calendario sk)
+- idade 
+- peso 
+- caloria_basal 
+- caloria_total
+- caloria_consumido
+- proteina_consumida
+- meta_caloria_deficit
+- meta_caloria_superavit
+- meta_proteina
 
 ### ETL
 
+0. Ter a d_calendario feita
 1. Ingerir dados de dieta para o GCS (bronze.notas_nutricao)
 2. Fazer processamento NLP para estruturar dados de dietas (bronze.notas_nutricao_enriquecida)
 3. Encontrar forma canônica (alimento-unidade) para cada alimento e criar com RAG a d_alimento
-4. Formas alternativas vão para uma tabela DLQ
-
-1. Aplicar regras gerais
-
-copo -> 200ml
-pratinho -> 250g
-prato -> 500g
-60min -> h
-
-2. Crio uma tabela bridge intermediária
-
-
-> TODO: adicionar medidas intermediárias: min
-> TODO: criar uma tabela bridge intermediária de conversão de unidades
-> TODO: converter do plural para o singular
+4. Inserir formas alternativas em uma tabela DLQ
+5. Construir tabela f_dieta_diaria

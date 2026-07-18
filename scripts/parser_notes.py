@@ -85,7 +85,7 @@ def parse(filepath: Path) -> Note:
             note.introspection = "\n".join(lines[1:])
 
         else:
-            for line in lines[1:]:
+            for line in lines:
                 if ":" in line:
                     key, value = (line + " ").split(":", 1)
                     note.labels[key.strip()] = value.strip()

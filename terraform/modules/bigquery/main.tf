@@ -65,10 +65,11 @@ variable "ingestion_sources" {
   type = set(string)
   default = [
     "notas_nutricao", 
-    "notas_nutricao_enriquecida", 
     "notas_tarefas", 
     "notas_introspeccao", 
-    "notas_atributos"
+    "notas_atributos",
+    "notas_nutricao_enriquecida", 
+    "notas_atributos_enriquecido", 
   ]
 }
 

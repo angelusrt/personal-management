@@ -5,6 +5,8 @@ import io
 from datetime import datetime
 
 import pandas as pd
+import numpy as np
+
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
 from airflow.decorators import dag, task
 
@@ -12,7 +14,7 @@ from scripts import utils
 
 
 @task
-def process_nutrition():
+def enrich_nutrition():
     assert type(utils.INGESTION_BUCKET) is str
 
     hook = GCSHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
@@ -170,7 +172,6 @@ def process_nutrition():
 
     # 11. Fin
 
-    full["quantidade"] = full["quantidade"].astype(float)
     full["alimento"] = full["alimento"].str.strip()
     result = pd.concat([exploded, full], axis=1)
     result = result.drop(columns=["descricao", "itens"])
@@ -193,14 +194,83 @@ def process_nutrition():
     print(f"Uploaded {len(df)} rows to gs://{utils.INGESTION_BUCKET}/{object_name}")
 
 
+@task
+def enrich_health_features():
+    assert type(utils.INGESTION_BUCKET) is str
+
+    hook = GCSHook(gcp_conn_id="GOOGLE_CLOUD_DEFAULT")
+
+    data = hook.download(
+        bucket_name=utils.INGESTION_BUCKET,
+        object_name="notas_atributos/main.parquet",
+    )
+
+    df = pd.read_parquet(
+        io.BytesIO(data), 
+        columns=[
+            'nome_arquivo', 
+            'data_referencia', 
+            'tipo', 
+            'valor'
+       ],
+    )
+
+    # 0. Transform long table in wide table
+
+    df = df.pivot(columns="tipo", values="valor", index="data_referencia")
+    df = df.reset_index()
+
+    df["data"] = pd.to_datetime(df["data_referencia"], format="%Y-%m-%d")
+    df["idade"] = df["data"].dt.year - 2003
+
+    df = df.set_index("data")
+
+    df["data_referencia"] = df["data_referencia"].str.replace("-", "")
+    df["peso"] = (
+        df["peso"]
+        .replace("", np.nan)
+        .str.replace(",", ".")
+        .astype("float32")
+        .interpolate(method="time")
+    )
+
+    df = df.reset_index().drop(columns=["data"])
+
+    df["altura"] = 180
+
+    # 1. Calculate basal metabolism
+
+    df["caloria_basal"] = (10 * df["peso"] + 6.25 * df["altura"] - 5 * df["idade"] + 5) * 1.2
+
+    # Uploading
+
+    buffer = io.BytesIO()
+    df.to_parquet(buffer, engine="pyarrow", index=False)
+    buffer.seek(0)
+
+    object_name = "notas_atributos_enriquecido/main.parquet"
+
+    hook.upload(
+        bucket_name=utils.INGESTION_BUCKET,
+        object_name=object_name,
+        data=buffer.getvalue(),
+        mime_type="application/octet-stream",
+    )
+
+    print(f"Uploaded {len(df)} rows to gs://{utils.INGESTION_BUCKET}/{object_name}")
+
+
 @dag(
     schedule=None,
     start_date=datetime(2026, 5, 23),
     catchup=False,
     tags=["notes", "enrichment"],
 )
-def enrich_nutrition():
-    process_nutrition()
+def enrich_notes():
+    task0 = enrich_nutrition()
+    task1 = enrich_health_features()
+
+    task0 >> task1
 
 
-enrich_nutrition()
+enrich_notes()

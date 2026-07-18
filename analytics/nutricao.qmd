@@ -230,3 +230,74 @@ FROM canonical_form
 df = client.query(query).to_dataframe()
 df.head(50)
 ```
+
+```{python}
+#| eval: false
+
+query = f"""
+SELECT * FROM bronze.raw_notas_nutricao_enriquecida WHERE quantidade in ('10.000', '0.50') LIMIT 100
+"""
+
+df = client.query(query).to_dataframe()
+df.head(50)
+```
+
+```{python}
+#| eval: false
+
+query = f"""
+SELECT  
+	c.data,
+	SUM(proteina) AS proteina,
+	SUM(gordura) AS gordura,
+	SUM(carboidrato) AS carboidrato,
+	SUM(caloria) AS caloria,
+FROM gold.f_dieta_diaria d
+LEFT JOIN gold.d_calendario c ON d.data_referencia = c.id_calendario
+GROUP BY 1
+ORDER BY 1 DESC
+"""
+
+df = client.query(query).to_dataframe()
+df.head(50)
+```
+
+```{python}
+#| eval: false
+
+query = f"""
+SELECT  
+	d.data_referencia,
+	d.id_alimento,
+	a.nome_alimento,
+	d.quantidade,
+	d.proteina,
+	d.gordura,
+	d.carboidrato,
+	d.caloria
+FROM gold.f_dieta_diaria d
+LEFT JOIN gold.d_alimento a ON a.id_alimento = d.id_alimento
+WHERE data_referencia IN (
+	-- 20260713, 
+	-- 20260605, 
+	20260708
+)
+ORDER BY data_referencia DESC
+"""
+
+df = client.query(query).to_dataframe()
+df.head(50)
+```
+
+```{python}
+query = f"""
+SELECT  
+	*
+FROM gold.f_saude 
+ORDER BY data_referencia DESC
+--
+"""
+
+df = client.query(query).to_dataframe()
+df.head(50)
+```

@@ -2240,7 +2240,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </header>
 
 
-<div id="9aa8c34a" class="cell" data-execution_count="1">
+<div id="08b4de38" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.cloud <span class="im">import</span> bigquery</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -2249,7 +2249,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> bigquery.Client(project<span class="op">=</span>project)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">&quot;display.max_rows&quot;</span>, <span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ec09ae06" class="cell" data-execution_count="2">
+<div id="9526b1da" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao</span></span>
@@ -2257,7 +2257,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="fa864da4" class="cell" data-execution_count="3">
+<div id="512a001e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&quot;foi_feito&quot;</span>]][[<span class="st">&quot;data_referencia&quot;</span>, <span class="st">&quot;eh_meta&quot;</span>, <span class="st">&quot;descricao&quot;</span>]]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 0. Remove &#39;[]&#39;</span></span>
@@ -2364,7 +2364,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="co">#result.head(100)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
-<div id="450a964d" class="cell" data-execution_count="4">
+<div id="4e245c1f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao_enriquecida</span></span>
@@ -2375,7 +2375,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="06ec0ebf" class="cell" data-execution_count="5">
+<div id="2c9ec365" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># copo, xicara -&gt; ml + pratinho -&gt; g + prato -&gt; g + scoop -&gt; g + min -&gt; h</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sobra fatia, outra unidade inconvencional</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2414,14 +2414,10 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>scoop</td>
+<td>hora</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
-<td>hora</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">5</th>
 <td>fatia</td>
 </tr>
 </tbody>
@@ -2430,7 +2426,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </div>
 </div>
 </div>
-<div id="e4a6107d" class="cell" data-execution_count="6">
+<div id="b5cdf474" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT *</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM bronze.raw_notas_nutricao_enriquecida</span></span>
@@ -2439,7 +2435,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>units <span class="op">=</span> client.query(query).to_dataframe()</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>units.head(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cbf79295" class="cell" data-execution_count="7">
+<div id="b4b0ffac" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ss">WITH base AS (</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT</span></span>
@@ -2485,6 +2481,641 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
 <span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="dc935ce0" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT * FROM bronze.raw_notas_nutricao_enriquecida WHERE quantidade in (&#39;10.000&#39;, &#39;0.50&#39;) LIMIT 100</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="4570c8bc" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT  </span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    c.data,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    SUM(proteina) AS proteina,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    SUM(gordura) AS gordura,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    SUM(carboidrato) AS carboidrato,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    SUM(caloria) AS caloria,</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ss">FROM gold.f_dieta_diaria d</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ss">LEFT JOIN gold.d_calendario c ON d.data_referencia = c.id_calendario</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ss">GROUP BY 1</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ss">ORDER BY 1 DESC</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="8545162b" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT  </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.data_referencia,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.id_alimento,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    a.nome_alimento,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.quantidade,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.proteina,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.gordura,</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.carboidrato,</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ss">    d.caloria</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ss">FROM gold.f_dieta_diaria d</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="ss">LEFT JOIN gold.d_alimento a ON a.id_alimento = d.id_alimento</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ss">WHERE data_referencia IN (</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ss">    -- 20260713, </span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="ss">    -- 20260605, </span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    20260708</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="ss">)</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="ss">ORDER BY data_referencia DESC</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="0c9907bc" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT  </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    *</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ss">FROM gold.f_saude </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ss">ORDER BY data_referencia DESC</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ss">--</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> client.query(query).to_dataframe()</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">data_referencia</th>
+<th data-quarto-table-cell-role="th">idade</th>
+<th data-quarto-table-cell-role="th">peso</th>
+<th data-quarto-table-cell-role="th">altura</th>
+<th data-quarto-table-cell-role="th">caloria_basal</th>
+<th data-quarto-table-cell-role="th">caloria_total</th>
+<th data-quarto-table-cell-role="th">meta_caloria_deficit</th>
+<th data-quarto-table-cell-role="th">meta_caloria_superavit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>20260716</td>
+<td>23</td>
+<td>74.05</td>
+<td>180</td>
+<td>2106.60</td>
+<td>2456.60</td>
+<td>2156.60</td>
+<td>2756.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>20260715</td>
+<td>23</td>
+<td>74.05</td>
+<td>180</td>
+<td>2106.60</td>
+<td>2106.60</td>
+<td>1806.60</td>
+<td>2406.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>20260713</td>
+<td>23</td>
+<td>75.55</td>
+<td>180</td>
+<td>2124.60</td>
+<td>2474.60</td>
+<td>2174.60</td>
+<td>2774.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>20260712</td>
+<td>23</td>
+<td>76.30</td>
+<td>180</td>
+<td>2133.60</td>
+<td>2483.60</td>
+<td>2183.60</td>
+<td>2783.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>20260711</td>
+<td>23</td>
+<td>76.17</td>
+<td>180</td>
+<td>2132.00</td>
+<td>2482.00</td>
+<td>2182.00</td>
+<td>2782.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>20260710</td>
+<td>23</td>
+<td>76.03</td>
+<td>180</td>
+<td>2130.40</td>
+<td>2480.40</td>
+<td>2180.40</td>
+<td>2780.40</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>20260709</td>
+<td>23</td>
+<td>75.90</td>
+<td>180</td>
+<td>2128.80</td>
+<td>2128.80</td>
+<td>1828.80</td>
+<td>2428.80</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>20260708</td>
+<td>23</td>
+<td>75.77</td>
+<td>180</td>
+<td>2127.20</td>
+<td>2477.20</td>
+<td>2177.20</td>
+<td>2777.20</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>20260707</td>
+<td>23</td>
+<td>75.63</td>
+<td>180</td>
+<td>2125.60</td>
+<td>2125.60</td>
+<td>1825.60</td>
+<td>2425.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>20260706</td>
+<td>23</td>
+<td>75.50</td>
+<td>180</td>
+<td>2124.00</td>
+<td>2474.00</td>
+<td>2174.00</td>
+<td>2774.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>20260705</td>
+<td>23</td>
+<td>75.30</td>
+<td>180</td>
+<td>2121.60</td>
+<td>2471.60</td>
+<td>2171.60</td>
+<td>2771.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>20260704</td>
+<td>23</td>
+<td>75.38</td>
+<td>180</td>
+<td>2122.60</td>
+<td>2472.60</td>
+<td>2172.60</td>
+<td>2772.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>20260703</td>
+<td>23</td>
+<td>75.47</td>
+<td>180</td>
+<td>2123.60</td>
+<td>2123.60</td>
+<td>1823.60</td>
+<td>2423.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>20260702</td>
+<td>23</td>
+<td>75.55</td>
+<td>180</td>
+<td>2124.60</td>
+<td>2124.60</td>
+<td>1824.60</td>
+<td>2424.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>20260701</td>
+<td>23</td>
+<td>75.63</td>
+<td>180</td>
+<td>2125.60</td>
+<td>2475.60</td>
+<td>2175.60</td>
+<td>2775.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>20260630</td>
+<td>23</td>
+<td>75.72</td>
+<td>180</td>
+<td>2126.60</td>
+<td>2476.60</td>
+<td>2176.60</td>
+<td>2776.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>20260629</td>
+<td>23</td>
+<td>75.80</td>
+<td>180</td>
+<td>2127.60</td>
+<td>2477.60</td>
+<td>2177.60</td>
+<td>2777.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">17</th>
+<td>20260628</td>
+<td>23</td>
+<td>75.98</td>
+<td>180</td>
+<td>2129.70</td>
+<td>2479.70</td>
+<td>2179.70</td>
+<td>2779.70</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>20260627</td>
+<td>23</td>
+<td>76.15</td>
+<td>180</td>
+<td>2131.80</td>
+<td>2481.80</td>
+<td>2181.80</td>
+<td>2781.80</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>20260626</td>
+<td>23</td>
+<td>76.33</td>
+<td>180</td>
+<td>2133.90</td>
+<td>2483.90</td>
+<td>2183.90</td>
+<td>2783.90</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">20</th>
+<td>20260625</td>
+<td>23</td>
+<td>76.50</td>
+<td>180</td>
+<td>2136.00</td>
+<td>2136.00</td>
+<td>1836.00</td>
+<td>2436.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">21</th>
+<td>20260624</td>
+<td>23</td>
+<td>76.68</td>
+<td>180</td>
+<td>2138.10</td>
+<td>2138.10</td>
+<td>1838.10</td>
+<td>2438.10</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">22</th>
+<td>20260623</td>
+<td>23</td>
+<td>76.85</td>
+<td>180</td>
+<td>2140.20</td>
+<td>2140.20</td>
+<td>1840.20</td>
+<td>2440.20</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">23</th>
+<td>20260622</td>
+<td>23</td>
+<td>77.03</td>
+<td>180</td>
+<td>2142.30</td>
+<td>2492.30</td>
+<td>2192.30</td>
+<td>2792.30</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">24</th>
+<td>20260621</td>
+<td>23</td>
+<td>77.20</td>
+<td>180</td>
+<td>2144.40</td>
+<td>2494.40</td>
+<td>2194.40</td>
+<td>2794.40</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">25</th>
+<td>20260620</td>
+<td>23</td>
+<td>77.38</td>
+<td>180</td>
+<td>2146.50</td>
+<td>2496.50</td>
+<td>2196.50</td>
+<td>2796.50</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">26</th>
+<td>20260619</td>
+<td>23</td>
+<td>77.55</td>
+<td>180</td>
+<td>2148.60</td>
+<td>2148.60</td>
+<td>1848.60</td>
+<td>2448.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">27</th>
+<td>20260618</td>
+<td>23</td>
+<td>77.72</td>
+<td>180</td>
+<td>2150.70</td>
+<td>2150.70</td>
+<td>1850.70</td>
+<td>2450.70</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">28</th>
+<td>20260617</td>
+<td>23</td>
+<td>77.90</td>
+<td>180</td>
+<td>2152.80</td>
+<td>2502.80</td>
+<td>2202.80</td>
+<td>2802.80</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">29</th>
+<td>20260616</td>
+<td>23</td>
+<td>78.03</td>
+<td>180</td>
+<td>2154.34</td>
+<td>2504.34</td>
+<td>2204.34</td>
+<td>2804.34</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">30</th>
+<td>20260615</td>
+<td>23</td>
+<td>78.16</td>
+<td>180</td>
+<td>2155.89</td>
+<td>2505.89</td>
+<td>2205.89</td>
+<td>2805.89</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">31</th>
+<td>20260614</td>
+<td>23</td>
+<td>78.29</td>
+<td>180</td>
+<td>2157.43</td>
+<td>2507.43</td>
+<td>2207.43</td>
+<td>2807.43</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">32</th>
+<td>20260613</td>
+<td>23</td>
+<td>78.41</td>
+<td>180</td>
+<td>2158.97</td>
+<td>2508.97</td>
+<td>2208.97</td>
+<td>2808.97</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">33</th>
+<td>20260612</td>
+<td>23</td>
+<td>78.54</td>
+<td>180</td>
+<td>2160.51</td>
+<td>2160.51</td>
+<td>1860.51</td>
+<td>2460.51</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">34</th>
+<td>20260611</td>
+<td>23</td>
+<td>78.67</td>
+<td>180</td>
+<td>2162.06</td>
+<td>2162.06</td>
+<td>1862.06</td>
+<td>2462.06</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">35</th>
+<td>20260610</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2513.60</td>
+<td>2213.60</td>
+<td>2813.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">36</th>
+<td>20260609</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2513.60</td>
+<td>2213.60</td>
+<td>2813.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">37</th>
+<td>20260608</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2513.60</td>
+<td>2213.60</td>
+<td>2813.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">38</th>
+<td>20260607</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2513.60</td>
+<td>2213.60</td>
+<td>2813.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">39</th>
+<td>20260606</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2513.60</td>
+<td>2213.60</td>
+<td>2813.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">40</th>
+<td>20260605</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2338.60</td>
+<td>2038.60</td>
+<td>2638.60</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">41</th>
+<td>20260604</td>
+<td>23</td>
+<td>78.80</td>
+<td>180</td>
+<td>2163.60</td>
+<td>2163.60</td>
+<td>1863.60</td>
+<td>2463.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">42</th>
+<td>20260603</td>
+<td>23</td>
+<td>79.10</td>
+<td>180</td>
+<td>2167.20</td>
+<td>2517.20</td>
+<td>2217.20</td>
+<td>2817.20</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">43</th>
+<td>20260602</td>
+<td>23</td>
+<td>79.40</td>
+<td>180</td>
+<td>2170.80</td>
+<td>2170.80</td>
+<td>1870.80</td>
+<td>2470.80</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">44</th>
+<td>20260601</td>
+<td>23</td>
+<td>80.20</td>
+<td>180</td>
+<td>2180.40</td>
+<td>2530.40</td>
+<td>2230.40</td>
+<td>2830.40</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">45</th>
+<td>20260531</td>
+<td>23</td>
+<td>2.00</td>
+<td>180</td>
+<td>1242.00</td>
+<td>1592.00</td>
+<td>1292.00</td>
+<td>1892.00</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">46</th>
+<td>20260530</td>
+<td>23</td>
+<td>77.50</td>
+<td>180</td>
+<td>2148.00</td>
+<td>2498.00</td>
+<td>2198.00</td>
+<td>2798.00</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">47</th>
+<td>20260529</td>
+<td>23</td>
+<td>77.63</td>
+<td>180</td>
+<td>2149.60</td>
+<td>2149.60</td>
+<td>1849.60</td>
+<td>2449.60</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">48</th>
+<td>20260528</td>
+<td>23</td>
+<td>77.77</td>
+<td>180</td>
+<td>2151.20</td>
+<td>2151.20</td>
+<td>1851.20</td>
+<td>2451.20</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">49</th>
+<td>20260527</td>
+<td>23</td>
+<td>77.90</td>
+<td>180</td>
+<td>2152.80</td>
+<td>2502.80</td>
+<td>2202.80</td>
+<td>2802.80</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
 </div>
 
 </main>

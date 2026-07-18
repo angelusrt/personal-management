@@ -1,9 +1,3 @@
-{{ config(
-    materialized='incremental',
-    unique_key='nome_alimento',
-    incremental_strategy='merge'
-) }}
-
 WITH base AS (
     SELECT
         alimento,
@@ -11,6 +5,13 @@ WITH base AS (
         COUNT(*) AS quantidade
     FROM {{ source('bronze', 'raw_notas_nutricao_enriquecida') }}
     GROUP BY alimento, unidade
+	{% if is_incremental() %}
+		WHERE NOT EXISTS (
+			SELECT 1
+			FROM {{ this }} t
+			WHERE t.nome_alimento = s.alimento
+		)
+    {% endif %}
 ),
 canonical_form AS (
     SELECT

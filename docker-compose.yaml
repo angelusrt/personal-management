@@ -24,7 +24,6 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
-      - ./data:/opt/airflow/data
       - ./warehouse:/opt/airflow/warehouse
       - ./scripts:/opt/airflow/scripts
       - ./dbt:/opt/airflow/dbt
