@@ -6,7 +6,6 @@ WITH base AS (
         unidade,
         COUNT(*) AS quantidade
     FROM {{ source('bronze', 'raw_notas_nutricao_enriquecida') }}
-    GROUP BY alimento, unidade
 	{% if is_incremental() %}
 		WHERE NOT EXISTS (
 			SELECT 1
@@ -14,6 +13,7 @@ WITH base AS (
 			WHERE t.nome_alimento = alimento
 		)
     {% endif %}
+    GROUP BY alimento, unidade
 ),
 canonical_form AS (
     SELECT
