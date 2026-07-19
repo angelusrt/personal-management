@@ -6,3 +6,7 @@ infraestrutura, diagramas e muito mais.
 ## Arquitetura
 
 [Nossa arquitetura](./architecture.md)
+
+## Paineis
+
+[Visualizações](./views.md)

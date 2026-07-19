@@ -1,3 +1,5 @@
+{{ config(materialized='incremental') }}
+
 WITH base AS (
     SELECT
         alimento,
@@ -9,7 +11,7 @@ WITH base AS (
 		WHERE NOT EXISTS (
 			SELECT 1
 			FROM {{ this }} t
-			WHERE t.nome_alimento = s.alimento
+			WHERE t.nome_alimento = alimento
 		)
     {% endif %}
 ),

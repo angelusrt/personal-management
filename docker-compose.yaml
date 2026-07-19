@@ -29,4 +29,4 @@ services:
       - ./dbt:/opt/airflow/dbt
       - ${NOTES_FOLDER}:/opt/airflow/data/notes
       - ${BQ_CREDENTIAL_FILE}:/opt/airflow/keys/airflow-key.json:ro
-      - ./airflow-home:/root/airflow
+      - ./airflow-home/airflow.db:/opt/airflow/airflow.db
