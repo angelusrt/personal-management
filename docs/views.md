@@ -1,6 +1,8 @@
-# Views
+# Paineis
 
-## Página de Nutrição
+## Página de Dieta
+
+![Painel de Dieta](./static/diet-dashboard.png)
 
 Eu tenho a necessidade de acompanhar minha caloria diária, 
 consumo de proteína e esforço físico, para determinar se eu 
@@ -37,6 +39,8 @@ gold.d_calendario:
 
 #### Alimentação
 
+![Modelagem da fato-dieta](./static/diet-fact-diagram.png)
+
 silver.dlq_alimento:
 - id_alimento (sk)
 - nome_alimento 
@@ -66,6 +70,8 @@ gold.f_dieta_diaria:
 - caloria
 
 #### Saúde
+
+![Modelagem da fato-saúde](./static/health-fact-diagram.png)
 
 gold.f_saude:
 - data_referencia (d_calendario sk)

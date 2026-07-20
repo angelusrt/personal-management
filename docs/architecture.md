@@ -1,6 +1,6 @@
 # Arquitetura
 
-![Diagrama de Arquitetura](./architecture.png)
+![Diagrama de Arquitetura](./static/architecture.png)
 
 A atual arquitetura consiste em um Data Lakehouse com: On Premise + GCS + BigQuery.
 
